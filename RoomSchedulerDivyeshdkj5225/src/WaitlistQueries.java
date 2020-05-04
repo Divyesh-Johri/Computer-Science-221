@@ -21,6 +21,7 @@ public class WaitlistQueries {
     private static Connection connection;
     private static PreparedStatement addWaitlist;
     private static PreparedStatement getWaitlistByDate;
+    private static PreparedStatement deleteEntry;
     
     public static void addWaitlistEntry(String name, String date, int seats)
     {
@@ -61,5 +62,43 @@ public class WaitlistQueries {
         }
         
         return waitlist;
+    }
+    
+    public static ArrayList<WaitlistEntry> getWaitlistByFaculty(String faculty){
+        ResultSet rs;
+        connection = DBConnection.getConnection();
+        ArrayList<WaitlistEntry> waitlist = new ArrayList<WaitlistEntry>();
+        try{
+                       
+            getWaitlistByDate = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp DESC");
+            rs = getWaitlistByDate.executeQuery();
+            
+            while(rs.next()){
+                if(rs.getString(1).equals(faculty)){
+                    waitlist.add(new WaitlistEntry(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getTimestamp(4)));      
+                }
+            }                      
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }
+        
+        return waitlist;
+    }
+    
+    public static void deleteWaitlistEntry(WaitlistEntry e){
+        
+        connection = DBConnection.getConnection();
+        try{
+            deleteEntry = connection.prepareStatement("DELETE FROM Waitlist WHERE Faculty=(?) AND Date=(?)");
+            deleteEntry.setString(1,e.getFaculty());
+            deleteEntry.setString(2,e.getDate());            
+            deleteEntry.executeQuery();            
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }
     }
 }

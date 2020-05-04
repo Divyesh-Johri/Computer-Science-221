@@ -10,4 +10,20 @@
  */
 public class RoomEntry {
     
+    private String roomName;
+    private int roomSize;
+    
+    public RoomEntry(String room, int seats){
+        roomName = room;
+        roomSize = seats;
+    }
+    
+    public String getName(){
+        return roomName;
+    }
+    
+    public int getSize(){
+        return roomSize;
+    }
+    
 }

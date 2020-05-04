@@ -17,10 +17,6 @@ import java.util.ArrayList;
  */
 public class ReservationEntry {
     
-    // Loop through rooms greater than given size, in order of closest size
-    // to largest size. If no reservation found for given date, reserve the
-    // room and break.
-
     // If no reservation made, place on waitlist for closest room size
     private String faculty;
     private String room;

@@ -19,11 +19,16 @@ import javafx.util.Pair;
 public class RoomQueries {
     
     private static Connection connection;
+    
+    //getAllPossibleRooms
     private static ArrayList<String> rooms = new ArrayList<String>();
     private static PreparedStatement getRoomsList;
     private static PreparedStatement checkRooms;
     private static ResultSet resultSet;
     private static ResultSet dateSet;
+    
+    //addRoom
+    private static PreparedStatement addRooms;
     
     public static ArrayList<String> getAllPossibleRooms(int seats, String date)
     {
@@ -55,6 +60,37 @@ public class RoomQueries {
         }
         
         return rooms;        
+    }
+    
+    public static void addRoom(RoomEntry e){
+        connection = DBConnection.getConnection();
+        try
+        {
+            addRooms = connection.prepareStatement("INSERT INTO Rooms (Name, Seats) VALUES (?, ?)");
+            addRooms.setString(1, e.getName());
+            addRooms.setInt(2, e.getSize());
+            addRooms.executeUpdate();
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }
+        
+        //Remove Waitlist entries
+        //Add waitlist entries as reservations to see if they can be reserved,
+        //the rest will automatically re-enter the waitlist
+        
+        ArrayList<WaitlistEntry> waitlist = new ArrayList<WaitlistEntry>();
+        waitlist = WaitlistQueries.getWaitlist();
+        
+        if (!waitlist.isEmpty()){
+            
+            for(WaitlistEntry w : waitlist){
+                WaitlistQueries.deleteWaitlistEntry(w);
+                new ReservationEntry(w.getFaculty(), w.getDate(), w.getSeats());
+            }
+            
+        }
     }
     
 }
