@@ -462,24 +462,29 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel14" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="reservationsStatusLabel" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="reservationsWaitlistComboBox" min="-2" max="-2" attributes="0"/>
-                                  <Component id="reservationsReservationsComboBox" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel14" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="deleteWaitlistButton" min="-2" max="-2" attributes="0"/>
-                                  <Component id="deleteReservationButton" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="reservationsWaitlistComboBox" min="-2" max="-2" attributes="0"/>
+                                          <Component id="reservationsReservationsComboBox" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="deleteWaitlistButton" min="-2" max="-2" attributes="0"/>
+                                          <Component id="deleteReservationButton" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="reservationsFacultyComboBox" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="reservationsFacultyComboBox" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="126" max="32767" attributes="0"/>
                   </Group>
@@ -507,7 +512,9 @@
                           </Group>
                           <Component id="deleteWaitlistButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="379" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="reservationsStatusLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="343" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -588,6 +595,8 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="reservationsStatusLabel">
             </Component>
           </SubComponents>
         </Container>

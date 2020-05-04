@@ -125,6 +125,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         jLabel14 = new javax.swing.JLabel();
         deleteWaitlistButton = new javax.swing.JButton();
         reservationsWaitlistComboBox = new javax.swing.JComboBox<>();
+        reservationsStatusLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         statusDateComboBox = new javax.swing.JComboBox<>();
@@ -397,20 +398,23 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel12))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(reservationsStatusLabel)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(reservationsWaitlistComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(reservationsReservationsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(78, 78, 78)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel12))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(deleteWaitlistButton)
-                            .addComponent(deleteReservationButton)))
-                    .addComponent(reservationsFacultyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(reservationsWaitlistComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(reservationsReservationsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(78, 78, 78)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(deleteWaitlistButton)
+                                    .addComponent(deleteReservationButton)))
+                            .addComponent(reservationsFacultyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(126, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -431,7 +435,9 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                         .addComponent(jLabel14)
                         .addComponent(reservationsWaitlistComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(deleteWaitlistButton))
-                .addContainerGap(379, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addComponent(reservationsStatusLabel)
+                .addContainerGap(343, Short.MAX_VALUE))
         );
 
         datePanel.addTab("Reservations", jPanel6);
@@ -594,11 +600,12 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
     }//GEN-LAST:event_addRoomSubmitActionPerformed
 
     private void deleteReservationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteReservationButtonActionPerformed
-        // Delete selected reservation  
+        // Delete selected reservation  x
         ReservationEntry reservation = (ReservationEntry) reservationsReservationsComboBox.getSelectedItem();
         
         ReservationQueries.deleteReservationEntry(reservation);
         
+        reservationsStatusLabel.setText("The selected reservation was cancelled");
         rebuildReservationsComboBoxes();
     }//GEN-LAST:event_deleteReservationButtonActionPerformed
 
@@ -608,6 +615,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         
         WaitlistQueries.deleteWaitlistEntry(waitlist);
         
+        reservationsStatusLabel.setText("The selected waitlist entry was cancelled");
         rebuildReservationsComboBoxes();
     }//GEN-LAST:event_deleteWaitlistButtonActionPerformed
 
@@ -695,6 +703,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> reservationsFacultyComboBox;
     private javax.swing.JComboBox<String> reservationsReservationsComboBox;
+    private javax.swing.JLabel reservationsStatusLabel;
     private javax.swing.JComboBox<String> reservationsWaitlistComboBox;
     private javax.swing.JComboBox<String> reserveDateComboBox;
     private javax.swing.JComboBox<String> reserveFacultyComboBox;
