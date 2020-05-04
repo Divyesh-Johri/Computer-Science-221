@@ -1,6 +1,7 @@
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,13 +72,24 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        waitlistPanel = new javax.swing.JTabbedPane();
+        datePanel = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         addFacultyTextField = new javax.swing.JTextField();
         addFacultyButton = new javax.swing.JButton();
         addFacultyStatusLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        addDateSpinner = new javax.swing.JSpinner();
+        submitNewDate = new javax.swing.JButton();
+        addDateStatusLabel = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        addRoomNameTextField = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        addRoomSpinner = new javax.swing.JSpinner();
+        addRoomSubmit = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         reserveFacultyComboBox = new javax.swing.JComboBox<>();
@@ -155,7 +167,100 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                 .addContainerGap(364, Short.MAX_VALUE))
         );
 
-        waitlistPanel.addTab("Add Faculty", jPanel1);
+        datePanel.addTab("Add Faculty", jPanel1);
+
+        jLabel9.setText("Add Date:");
+
+        addDateSpinner.setModel(new javax.swing.SpinnerDateModel());
+
+        submitNewDate.setText("Submit");
+        submitNewDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitNewDateActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addDateStatusLabel)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(addDateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(submitNewDate)))
+                .addContainerGap(221, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(addDateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(submitNewDate))
+                .addGap(50, 50, 50)
+                .addComponent(addDateStatusLabel)
+                .addContainerGap(407, Short.MAX_VALUE))
+        );
+
+        datePanel.addTab("Add Date", jPanel4);
+
+        jLabel10.setText("New Room Name:");
+
+        addRoomNameTextField.setText("jTextField1");
+
+        jLabel11.setText("New Room Size:");
+
+        addRoomSpinner.setModel(new javax.swing.SpinnerNumberModel());
+
+        addRoomSubmit.setText("Submit");
+        addRoomSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRoomSubmitActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addRoomSubmit)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addGap(18, 18, 18)
+                        .addComponent(addRoomSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(addRoomNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(252, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(addRoomNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(addRoomSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(addRoomSubmit)
+                .addContainerGap(385, Short.MAX_VALUE))
+        );
+
+        datePanel.addTab("Add Room", jPanel5);
 
         jLabel4.setText("Faculty: ");
 
@@ -220,7 +325,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                 .addContainerGap(315, Short.MAX_VALUE))
         );
 
-        waitlistPanel.addTab("Reserve Room", jPanel2);
+        datePanel.addTab("Reserve Room", jPanel2);
 
         jLabel3.setText("Reservations by Date: ");
 
@@ -278,7 +383,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                 .addContainerGap(170, Short.MAX_VALUE))
         );
 
-        waitlistPanel.addTab("Status", jPanel3);
+        datePanel.addTab("Status", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -291,7 +396,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(waitlistPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(datePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -300,7 +405,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(waitlistPanel)
+                .addComponent(datePanel)
                 .addContainerGap())
         );
 
@@ -359,6 +464,21 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         statusReservationTextArea.insert("Faculty\tRoom\tDate\tSeats\tTimestamp\n", 0);
     }//GEN-LAST:event_statusDateComboBoxActionPerformed
 
+    private void submitNewDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitNewDateActionPerformed
+        // Convert Date to useable format, then add it
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        String spinnerValue = formater.format(addDateSpinner.getValue());
+        Date day = Date.valueOf(spinnerValue);
+        
+        Dates.addDate(day.toString());
+        addDateStatusLabel.setText(day.toString() + " has been added");
+    }//GEN-LAST:event_submitNewDateActionPerformed
+
+    private void addRoomSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRoomSubmitActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_addRoomSubmitActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -405,10 +525,18 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner addDateSpinner;
+    private javax.swing.JLabel addDateStatusLabel;
     private javax.swing.JButton addFacultyButton;
     private javax.swing.JLabel addFacultyStatusLabel;
     private javax.swing.JTextField addFacultyTextField;
+    private javax.swing.JTextField addRoomNameTextField;
+    private javax.swing.JSpinner addRoomSpinner;
+    private javax.swing.JButton addRoomSubmit;
+    private javax.swing.JTabbedPane datePanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -416,9 +544,12 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> reserveDateComboBox;
@@ -429,6 +560,6 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
     private javax.swing.JComboBox<String> statusDateComboBox;
     private javax.swing.JTextArea statusReservationTextArea;
     private javax.swing.JTextArea statusWaitlistTextArea;
-    private javax.swing.JTabbedPane waitlistPanel;
+    private javax.swing.JButton submitNewDate;
     // End of variables declaration//GEN-END:variables
 }

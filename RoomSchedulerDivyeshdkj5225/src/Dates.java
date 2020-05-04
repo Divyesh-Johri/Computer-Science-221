@@ -19,12 +19,22 @@ public class Dates {
     
     private static Connection connection;
     private static ArrayList<String> dates = new ArrayList<String>();
-    private static PreparedStatement addDates;
+    private static PreparedStatement addDate;
     private static PreparedStatement getDatesList;
     private static ResultSet resultSet;
     
-    public static void addDates(String date)
-    {        
+    public static void addDate(String date)
+    { 
+        connection = DBConnection.getConnection();
+        try{
+            addDate = connection.prepareStatement("INSERT INTO Dates (Date) VALUES (?)");
+            addDate.setString(1, date);
+            addDate.executeUpdate();
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }
     }
     
     public static ArrayList<String> getDatesList()
