@@ -21,6 +21,8 @@ public class ReservationQueries {
     private static Connection connection;
     private static PreparedStatement addReservation;    
     private static PreparedStatement getReservationByDate;
+    private static PreparedStatement getReservationByFaculty;
+    private static PreparedStatement getReservationByRoom;
     private static PreparedStatement deleteEntry;
     
     public static void addReservationEntry(ReservationEntry entry)
@@ -77,11 +79,35 @@ public class ReservationQueries {
         ArrayList<ReservationEntry> reservations = new ArrayList<ReservationEntry>();
         try{
                        
-            getReservationByDate = connection.prepareStatement("SELECT Faculty, Room, Date, Seats, Timestamp FROM Reservations");
-            rs = getReservationByDate.executeQuery();
+            getReservationByFaculty = connection.prepareStatement("SELECT Faculty, Room, Date, Seats, Timestamp FROM Reservations ORDER BY Date ASC");
+            rs = getReservationByFaculty.executeQuery();
             
             while(rs.next()){
                 if(rs.getString(1).equals(faculty)){
+                    reservations.add(new ReservationEntry(rs.getString(1), rs.getString(3), rs.getInt(4), rs.getString(2), rs.getTimestamp(5)));
+                }
+            }                      
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }       
+        
+        return reservations;
+    }
+    
+    public static ArrayList<ReservationEntry> getReservationsByRoom(String room){
+        // Obtain reservations by room in date ascending order
+        ResultSet rs;
+        connection = DBConnection.getConnection();
+        ArrayList<ReservationEntry> reservations = new ArrayList<ReservationEntry>();
+        try{
+                       
+            getReservationByRoom = connection.prepareStatement("SELECT Faculty, Room, Date, Seats, Timestamp FROM Reservations ORDER BY Date ASC");
+            rs = getReservationByRoom.executeQuery();
+            
+            while(rs.next()){
+                if(rs.getString(2).equals(room)){
                     reservations.add(new ReservationEntry(rs.getString(1), rs.getString(3), rs.getInt(4), rs.getString(2), rs.getTimestamp(5)));
                 }
             }                      

@@ -27,8 +27,14 @@ public class RoomQueries {
     private static ResultSet resultSet;
     private static ResultSet dateSet;
     
+    //getAllRooms
+    private static PreparedStatement getRooms;
+    
     //addRoom
     private static PreparedStatement addRooms;
+    
+    //dropRoom
+    private static PreparedStatement drop;
     
     public static ArrayList<String> getAllPossibleRooms(int seats, String date)
     {
@@ -62,6 +68,27 @@ public class RoomQueries {
         return rooms;        
     }
     
+    public static ArrayList<RoomEntry> getAllRooms(){
+        ResultSet rs;
+        connection = DBConnection.getConnection();
+        ArrayList<RoomEntry> rooms = new ArrayList<RoomEntry>();
+        try{
+                       
+            getRooms = connection.prepareStatement("SELECT Name, Seats FROM Reservations ORDER BY Seats ASC");
+            rs = getRooms.executeQuery();
+            
+            while(rs.next()){
+                    rooms.add(new RoomEntry(rs.getString(1), rs.getInt(2)));
+            }                      
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }       
+        
+        return rooms;
+    }
+    
     public static void addRoom(RoomEntry e){
         connection = DBConnection.getConnection();
         try
@@ -75,22 +102,38 @@ public class RoomQueries {
         {
             sqlException.printStackTrace();
         }
+        // Refresh the waitlist to see if any fit the new room.
+        WaitlistQueries.refreshWaitlist();
+    }
+    
+    public static void dropRoom(RoomEntry room){
+        //Obtain reservations for a room
+        ArrayList<ReservationEntry> reservations = ReservationQueries.getReservationsByRoom(room.getName());        
         
-        //Remove Waitlist entries
-        //Add waitlist entries as reservations to see if they can be reserved,
-        //the rest will automatically re-enter the waitlist
-        
-        ArrayList<WaitlistEntry> waitlist = new ArrayList<WaitlistEntry>();
-        waitlist = WaitlistQueries.getWaitlist();
-        
-        if (!waitlist.isEmpty()){
-            
-            for(WaitlistEntry w : waitlist){
-                WaitlistQueries.deleteWaitlistEntry(w);
-                new ReservationEntry(w.getFaculty(), w.getDate(), w.getSeats());
-            }
-            
+        //Delete reservations
+        for(ReservationEntry e : reservations){
+            ReservationQueries.deleteReservationEntry(e);
         }
+        
+        //Remove the room
+        connection = DBConnection.getConnection();
+        try{
+            drop = connection.prepareStatement("DELETE FROM Rooms WHERE Name=(?)");
+            drop.setString(1,room.getName());
+            drop.executeQuery();
+        }
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }
+        
+        //Add old reservations as new reservations to see if they can fit
+        for(ReservationEntry e : reservations){
+            new ReservationEntry(e.getFaculty(), e.getDate(), e.getSeats());
+        }       
+        
+        //Refresh waitlist to see if anyone in it fits
+        WaitlistQueries.refreshWaitlist();        
     }
     
 }

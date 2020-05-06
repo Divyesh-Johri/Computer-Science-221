@@ -21,6 +21,7 @@ public class WaitlistQueries {
     private static Connection connection;
     private static PreparedStatement addWaitlist;
     private static PreparedStatement getWaitlistByDate;
+    private static PreparedStatement getWaitlistByFaculty;
     private static PreparedStatement deleteEntry;
     
     public static void addWaitlistEntry(String name, String date, int seats)
@@ -49,7 +50,7 @@ public class WaitlistQueries {
         ArrayList<WaitlistEntry> waitlist = new ArrayList<WaitlistEntry>();
         try{
                        
-            getWaitlistByDate = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp DESC");
+            getWaitlistByDate = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp ASC");
             rs = getWaitlistByDate.executeQuery();
             
             while(rs.next()){
@@ -70,8 +71,8 @@ public class WaitlistQueries {
         ArrayList<WaitlistEntry> waitlist = new ArrayList<WaitlistEntry>();
         try{
                        
-            getWaitlistByDate = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp DESC");
-            rs = getWaitlistByDate.executeQuery();
+            getWaitlistByFaculty = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp ASC");
+            rs = getWaitlistByFaculty.executeQuery();
             
             while(rs.next()){
                 if(rs.getString(1).equals(faculty)){
@@ -85,6 +86,25 @@ public class WaitlistQueries {
         }
         
         return waitlist;
+    }
+    
+    // Method that takes the waitlist and re-runs it through reservations to see
+    // if it can fit into any of them.
+    public static void refreshWaitlist(){
+        //Remove Waitlist entries
+        //Add waitlist entries as reservations to see if they can be reserved,
+        //the rest will automatically re-enter the waitlist
+        
+        ArrayList<WaitlistEntry> waitlist = new ArrayList<WaitlistEntry>();
+        waitlist = WaitlistQueries.getWaitlist();
+        
+        if (!waitlist.isEmpty()){
+            
+            for(WaitlistEntry w : waitlist){
+                WaitlistQueries.deleteWaitlistEntry(w);
+                new ReservationEntry(w.getFaculty(), w.getDate(), w.getSeats());
+            }            
+        }
     }
     
     public static void deleteWaitlistEntry(WaitlistEntry e){
