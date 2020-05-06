@@ -56,7 +56,7 @@ public class ReservationQueries {
         ArrayList<ReservationEntry> reservations = new ArrayList<ReservationEntry>();
         try{
                        
-            getReservationByDate = connection.prepareStatement("SELECT Faculty, Room, Date, Seats, Timestamp FROM Reservations");
+            getReservationByDate = connection.prepareStatement("SELECT Faculty, Room, Date, Seats, Timestamp FROM Reservations ORDER BY Date DESC");
             rs = getReservationByDate.executeQuery();
             
             while(rs.next()){
@@ -128,7 +128,7 @@ public class ReservationQueries {
             deleteEntry.setString(1,e.getFaculty());
             deleteEntry.setString(2,e.getRoom());
             deleteEntry.setString(3,e.getDate());
-            deleteEntry.executeQuery();            
+            deleteEntry.executeUpdate();            
         }
         catch(SQLException sqlException)
         {

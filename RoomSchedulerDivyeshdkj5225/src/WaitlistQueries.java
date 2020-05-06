@@ -50,7 +50,7 @@ public class WaitlistQueries {
         ArrayList<WaitlistEntry> waitlist = new ArrayList<WaitlistEntry>();
         try{
                        
-            getWaitlistByDate = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp ASC");
+            getWaitlistByDate = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp DESC");
             rs = getWaitlistByDate.executeQuery();
             
             while(rs.next()){
@@ -71,7 +71,7 @@ public class WaitlistQueries {
         ArrayList<WaitlistEntry> waitlist = new ArrayList<WaitlistEntry>();
         try{
                        
-            getWaitlistByFaculty = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp ASC");
+            getWaitlistByFaculty = connection.prepareStatement("SELECT Faculty, Date, Seats, Timestamp FROM Waitlist ORDER BY Date, Timestamp DESC");
             rs = getWaitlistByFaculty.executeQuery();
             
             while(rs.next()){
@@ -101,7 +101,7 @@ public class WaitlistQueries {
         if (!waitlist.isEmpty()){
             
             for(WaitlistEntry w : waitlist){
-                WaitlistQueries.deleteWaitlistEntry(w);
+                deleteWaitlistEntry(w);
                 new ReservationEntry(w.getFaculty(), w.getDate(), w.getSeats());
             }            
         }
@@ -114,7 +114,7 @@ public class WaitlistQueries {
             deleteEntry = connection.prepareStatement("DELETE FROM Waitlist WHERE Faculty=(?) AND Date=(?)");
             deleteEntry.setString(1,e.getFaculty());
             deleteEntry.setString(2,e.getDate());            
-            deleteEntry.executeQuery();            
+            deleteEntry.executeUpdate();            
         }
         catch(SQLException sqlException)
         {

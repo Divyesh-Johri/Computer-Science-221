@@ -74,7 +74,7 @@ public class RoomQueries {
         ArrayList<RoomEntry> rooms = new ArrayList<RoomEntry>();
         try{
                        
-            getRooms = connection.prepareStatement("SELECT Name, Seats FROM Reservations ORDER BY Seats ASC");
+            getRooms = connection.prepareStatement("SELECT Name, Seats FROM Rooms ORDER BY Seats ASC");
             rs = getRooms.executeQuery();
             
             while(rs.next()){
@@ -120,7 +120,7 @@ public class RoomQueries {
         try{
             drop = connection.prepareStatement("DELETE FROM Rooms WHERE Name=(?)");
             drop.setString(1,room.getName());
-            drop.executeQuery();
+            drop.executeUpdate();
         }
         catch(SQLException sqlException)
         {

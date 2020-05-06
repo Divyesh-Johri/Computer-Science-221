@@ -36,6 +36,6 @@ public class WaitlistEntry {
     
     @Override
     public String toString(){
-        return("".format("%s\t%s\t%d\t%s", faculty, date, seats, timestamp.toString()));
+        return("".format("%s \t %s \t %s", faculty, date, seats));
     }
 }

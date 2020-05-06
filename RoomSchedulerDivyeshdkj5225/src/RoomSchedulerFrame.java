@@ -42,6 +42,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
     public void rebuildFacultyComboBoxes()
     {
         reserveFacultyComboBox.setModel(new javax.swing.DefaultComboBoxModel(Faculty.getFacultyList().toArray()));
+        reservationsFacultyComboBox.setModel(new javax.swing.DefaultComboBoxModel(Faculty.getFacultyList().toArray()));
     }
     
     public void rebuildDateComboBoxes()
@@ -54,17 +55,17 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         dropRoomComboBox.setModel(new javax.swing.DefaultComboBoxModel(RoomQueries.getAllRooms().toArray()));
     }
     
-    public void rebuildReservationsComboBoxes(){
-        
-        reservationsFacultyComboBox.setModel(new javax.swing.DefaultComboBoxModel(Faculty.getFacultyList().toArray()));
+    public void rebuildReservationsComboBoxes(){ 
         
         //Find reservations per selected faculty member
+        try{
         String faculty = reservationsFacultyComboBox.getSelectedItem().toString();        
         ArrayList<ReservationEntry> reservations = ReservationQueries.getReservationsByFaculty(faculty);
         ArrayList<WaitlistEntry> waitlistEntries = WaitlistQueries.getWaitlistByFaculty(faculty);
         
         reservationsReservationsComboBox.setModel(new javax.swing.DefaultComboBoxModel(reservations.toArray()));
         reservationsWaitlistComboBox.setModel(new javax.swing.DefaultComboBoxModel(waitlistEntries.toArray()));
+        }catch(NullPointerException e){}
     }
     
     public void rewriteStatusWaitlistTextArea(){
@@ -78,7 +79,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
             statusWaitlistTextArea.insert(e.toString() + "\n", 0);
         }        
         
-        statusWaitlistTextArea.insert("Faculty\tDate\tSeats\tTimestamp\n", 0);
+        statusWaitlistTextArea.insert("Faculty \t Date \t Seats\n", 0);
     }
 
     /**
@@ -109,7 +110,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         jLabel11 = new javax.swing.JLabel();
         addRoomSpinner = new javax.swing.JSpinner();
         addRoomSubmit = new javax.swing.JButton();
-        addRoomStatusLabel = new javax.swing.JLabel();
+        addRoomStatusLabel1 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -118,6 +119,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         dropRoomStatusLabel1 = new javax.swing.JLabel();
         dropRoomStatusLabel2 = new javax.swing.JLabel();
         dropRoomStatusLabel3 = new javax.swing.JLabel();
+        addRoomStatusLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         reserveFacultyComboBox = new javax.swing.JComboBox<>();
@@ -277,12 +279,6 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
             }
         });
 
-        dropRoomStatusLabel1.setText("temp");
-
-        dropRoomStatusLabel2.setText("temp");
-
-        dropRoomStatusLabel3.setText("temp");
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -290,6 +286,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addRoomStatusLabel2)
                     .addComponent(dropRoomStatusLabel3)
                     .addComponent(dropRoomStatusLabel2)
                     .addComponent(dropRoomStatusLabel1)
@@ -300,7 +297,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                         .addComponent(dropRoomComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel16)
                     .addComponent(jLabel15)
-                    .addComponent(addRoomStatusLabel)
+                    .addComponent(addRoomStatusLabel1)
                     .addComponent(addRoomSubmit)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel11)
@@ -328,8 +325,10 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                 .addGap(18, 18, 18)
                 .addComponent(addRoomSubmit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addRoomStatusLabel)
-                .addGap(42, 42, 42)
+                .addComponent(addRoomStatusLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addRoomStatusLabel2)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel16)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -343,7 +342,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
                 .addComponent(dropRoomStatusLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dropRoomStatusLabel3)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
 
         datePanel.addTab("Rooms", jPanel5);
@@ -416,6 +415,11 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         jLabel12.setText("Faculty:");
 
         reservationsFacultyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        reservationsFacultyComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reservationsFacultyComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel13.setText("Reservations:");
 
@@ -595,7 +599,6 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         
         // Give values to ReservationEntry
         ReservationEntry entry = new ReservationEntry(name, date, size);
-        ReservationQueries.addReservationEntry(entry);
         
         // If the room value is null, update reserveStatusLabel with room and date        
         // Else (they're on the wait list), update reserveStatusLabel with date
@@ -608,7 +611,8 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         }
         
         // Update appropriate text areas
-        rewriteStatusWaitlistTextArea();       
+        rewriteStatusWaitlistTextArea();
+        rebuildReservationsComboBoxes();
     }//GEN-LAST:event_reserveSubmitButtonActionPerformed
 
     private void statusDateComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusDateComboBoxActionPerformed
@@ -624,7 +628,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
             statusReservationTextArea.insert(e.toString() + "\n", 0);
         }        
         
-        statusReservationTextArea.insert("Faculty\tRoom\tDate\tSeats\tTimestamp\n", 0);
+        statusReservationTextArea.insert("Faculty \t Room \t Date\n", 0);
     }//GEN-LAST:event_statusDateComboBoxActionPerformed
 
     private void submitNewDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitNewDateActionPerformed
@@ -635,6 +639,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         
         Dates.addDate(day.toString());
         addDateStatusLabel.setText(day.toString() + " has been added");
+        rebuildDateComboBoxes();
     }//GEN-LAST:event_submitNewDateActionPerformed
 
     private void addRoomSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRoomSubmitActionPerformed
@@ -644,8 +649,25 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         RoomEntry room = new RoomEntry(roomName, roomSize);
         
         RoomQueries.addRoom(room);
-        addRoomStatusLabel.setText(roomName +" with " + roomSize + " seats has been added and the waitlist has been adjusted accordingly");
+        
+        // Display the takers
+        ArrayList<ReservationEntry> reservations = ReservationQueries.getReservationsByRoom(roomName);
+        ArrayList<String> people = new ArrayList<String>();
+        
+        addRoomStatusLabel1.setText(roomName +" with " + roomSize + " seats has been added");
+        if(!reservations.isEmpty()){
+            for(ReservationEntry r : reservations){
+                people.add(r.getFaculty());
+            }
+            int length = people.toString().length();
+            addRoomStatusLabel2.setText(people.toString().substring(1, length-1) +" took the new room");
+        }
+                
+        
+        
         rebuildRoomComboBoxes();
+        rebuildReservationsComboBoxes();
+        rewriteStatusWaitlistTextArea();
     }//GEN-LAST:event_addRoomSubmitActionPerformed
 
     private void deleteReservationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteReservationButtonActionPerformed
@@ -672,7 +694,8 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
             reservationsStatusLabel.setText("The selected reservation was cancelled, though hasn't been taken by anyone on the waitlist");
         }     
         
-        rebuildReservationsComboBoxes();   
+        rebuildReservationsComboBoxes();
+        rewriteStatusWaitlistTextArea();
     }//GEN-LAST:event_deleteReservationButtonActionPerformed
 
     private void deleteWaitlistButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteWaitlistButtonActionPerformed
@@ -683,6 +706,7 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         
         reservationsStatusLabel.setText("The selected waitlist entry was cancelled");
         rebuildReservationsComboBoxes();
+        rewriteStatusWaitlistTextArea();
     }//GEN-LAST:event_deleteWaitlistButtonActionPerformed
 
     private void dropRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dropRoomButtonActionPerformed
@@ -696,18 +720,18 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
         ArrayList<String> reserved = new ArrayList<String>();
         ArrayList<String> waitlisted = new ArrayList<String>();
         
-        ArrayList<WaitlistEntry> newWaitlist = WaitlistQueries.getWaitlist();
-        for(WaitlistEntry w : newWaitlist){
-            for(ReservationEntry r : reservations){
-                if(w.getFaculty().equals(r.getFaculty()) && w.getDate() == r.getDate()){
-                    waitlisted.add(w.getFaculty());
-                    reservations.remove(r);
+        for(ReservationEntry r : reservations){
+            ArrayList<ReservationEntry> facRes = ReservationQueries.getReservationsByFaculty(r.getFaculty());
+            int length = reserved.size();
+            
+            for(ReservationEntry f: facRes){
+                if(r.getDate().equals(f.getDate())){
+                    reserved.add(r.getFaculty());
                 }
             }
-        }
-        
-        for(ReservationEntry r : reservations){
-            reserved.add(r.getFaculty());
+            
+            if(reserved.size() == length)
+                waitlisted.add(r.getFaculty());
         }
         
         //Display results        
@@ -725,7 +749,14 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
             dropRoomStatusLabel3.setText(waitlisted.toString().substring(1, waitlistedLength-1) + " has been waitlisted");
         
         rebuildRoomComboBoxes();
+        rebuildReservationsComboBoxes();
+        rewriteStatusWaitlistTextArea();
     }//GEN-LAST:event_dropRoomButtonActionPerformed
+
+    private void reservationsFacultyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservationsFacultyComboBoxActionPerformed
+        // Rebuild combo boxes when new faculty is selected        
+        rebuildReservationsComboBoxes();
+    }//GEN-LAST:event_reservationsFacultyComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -780,7 +811,8 @@ public class RoomSchedulerFrame extends javax.swing.JFrame
     private javax.swing.JTextField addFacultyTextField;
     private javax.swing.JTextField addRoomNameTextField;
     private javax.swing.JSpinner addRoomSpinner;
-    private javax.swing.JLabel addRoomStatusLabel;
+    private javax.swing.JLabel addRoomStatusLabel1;
+    private javax.swing.JLabel addRoomStatusLabel2;
     private javax.swing.JButton addRoomSubmit;
     private javax.swing.JTabbedPane datePanel;
     private javax.swing.JButton deleteReservationButton;

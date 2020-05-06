@@ -26,4 +26,9 @@ public class RoomEntry {
         return roomSize;
     }
     
+    @Override
+    public String toString(){
+        return roomName + " (" + roomSize + " seats)";
+    }
+    
 }

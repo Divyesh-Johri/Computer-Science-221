@@ -30,6 +30,8 @@ public class ReservationEntry {
         date = dt;
         seats = size;
         room = getPossibleRoom();
+        
+        ReservationQueries.addReservationEntry(this);
     }
     
     // When inputting existing reservation entry
@@ -74,6 +76,6 @@ public class ReservationEntry {
 
     @Override
     public String toString(){
-        return("".format("%s\t%s\t%s\t%d\t%s", faculty, room, date, seats, timestamp.toString()));
+        return("".format("%s \t %s \t %s", faculty, room, date));
     }
 }
